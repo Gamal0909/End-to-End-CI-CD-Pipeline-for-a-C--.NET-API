@@ -1,0 +1,141 @@
+###############################################################################
+# .NET / C#
+###############################################################################
+
+# Build output
+bin/
+obj/
+out/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.rsuser
+
+# Visual Studio files
+.vs/
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+
+# Rider IDE
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Publish output
+publish/
+PublishProfiles/
+
+# dotnet CLI
+.dotnet/
+
+# Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Entity Framework Core migrations – keep, but ignore runtime generated files
+# Uncomment if you don't want to commit migrations:
+# Migrations/
+
+# ASP.NET
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+
+# Secrets / sensitive config
+secrets.json
+*.pfx
+*.p12
+
+###############################################################################
+# Docker
+###############################################################################
+.dockerignore
+
+# Docker-compose overrides with local secrets
+docker-compose.override.yml
+docker-compose.*.yml
+!docker-compose.yml
+
+###############################################################################
+# Terraform
+###############################################################################
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfstate.d/
+*.tfplan
+*.tfvars
+!example.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+crash.log
+crash.*.log
+
+###############################################################################
+# OS / Editor
+###############################################################################
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# JetBrains generic
+*.iml
+*.iws
+*.ipr
+
+###############################################################################
+# Logs & temp files
+###############################################################################
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.cache
+nohup.out
+
+###############################################################################
+# CI / Secrets
+###############################################################################
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt

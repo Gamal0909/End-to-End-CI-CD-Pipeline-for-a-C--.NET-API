@@ -1,0 +1,69 @@
+name: Continuous Integration & Continous Deployment
+
+on:
+    push:
+        branches:
+            - main
+
+    workflow_dispatch:
+
+jobs:
+    ci-cd-pipeline:
+        name: Build, Test, and deploy
+        runs-on: ubuntu-latest
+
+        steps:
+            #########################
+            # Continuos Integration
+            #########################
+
+            - name: Checkout Source Code
+              uses: actions/checkout@v4
+
+            - name: Setup .NET SDK
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: "10.0.x"
+
+            - name: Restore Dependencies
+              run: cd "${{ github.workspace }}/src/Demo1.Api" && dotnet restore
+
+            - name: Compile Application
+              run: dotnet build --no-restore --configuration Release
+
+            - name: Run Unit Test
+              run: dotnet test --no-build --configuration Release --verbosity normal
+
+            ###############################
+            # Continous Deployment CD
+            ###############################
+
+            - name: Configure Aws Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+
+            - name: Login to Amazon ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v2
+
+            - name: Build and Push Docker Image to ECR
+              id: build-image
+              env:
+                  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                  IMAGE_TAG: latest
+              run: |
+                  # Build the container using our optimized multi-stage Dockerfile
+                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+                  # Push the image to our secure custom ECR Repository
+                  docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+            - name: Deploy Rolling Update to Amazon ECS Fargate
+              run: |
+                  # Force ECS to download the fresh image and execute a safe zero-downtime rolling update
+                  aws ecs update-service \
+                  --cluster $ECS_CLUSTER \
+                  --service $ECS_SERVICE \
+                  --force-new-deployment
