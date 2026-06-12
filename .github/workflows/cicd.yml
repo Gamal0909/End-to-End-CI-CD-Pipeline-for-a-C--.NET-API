@@ -7,6 +7,11 @@ on:
 
     workflow_dispatch:
 
+env:
+  ECR_REPOSITORY: devops-api
+  ECS_CLUSTER: devops-cluster
+  ECS_SERVICE: devops-api-service
+
 jobs:
     ci-cd-pipeline:
         name: Build, Test, and deploy
