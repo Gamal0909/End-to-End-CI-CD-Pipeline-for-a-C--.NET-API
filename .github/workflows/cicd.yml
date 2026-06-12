@@ -17,6 +17,10 @@ jobs:
         name: Build, Test, and deploy
         runs-on: ubuntu-latest
 
+        defaults:
+            run:
+                working-directory: DevOpsApi
+
         steps:
             #########################
             # Continuos Integration
@@ -31,7 +35,7 @@ jobs:
                   dotnet-version: "10.0.x"
 
             - name: Restore Dependencies
-              run: cd "${{ github.workspace }}/src/Demo1.Api" && dotnet restore
+              run: dotnet restore
 
             - name: Compile Application
               run: dotnet build --no-restore --configuration Release
