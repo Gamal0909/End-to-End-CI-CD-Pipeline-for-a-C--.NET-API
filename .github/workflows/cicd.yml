@@ -9,8 +9,8 @@ on:
 
 env:
   ECR_REPOSITORY: devops-api
-  ECS_CLUSTER: devops-cluster
-  ECS_SERVICE: devops-api-service
+  ECS_CLUSTER: devops-api
+  ECS_SERVICE: devops-api
 
 jobs:
     ci-cd-pipeline:
