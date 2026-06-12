@@ -60,17 +60,18 @@ jobs:
 
             - name: Build and Push Docker Image to ECR
               id: build-image
+              working-directory: ${{ github.workspace }}
               env:
                   ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
                   IMAGE_TAG: latest
               run: |
-                  cd "${{ github.workspace }}/ \
                   # Build the container using our optimized multi-stage Dockerfile
                   docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
                   # Push the image to our secure custom ECR Repository
                   docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
             - name: Deploy Rolling Update to Amazon ECS Fargate
+              working-directory: ${{ github.workspace }}
               run: |
                   # Force ECS to download the fresh image and execute a safe zero-downtime rolling update
                   aws ecs update-service \
